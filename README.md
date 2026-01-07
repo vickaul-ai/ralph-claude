@@ -125,9 +125,11 @@ Too big (split these):
 - "Add authentication"
 - "Refactor the API"
 
-### Learnings Are Critical
+### AGENTS.md Updates Are Critical
 
-The `progress.txt` file should include **learnings**, not just logs:
+After each iteration, Ralph updates the relevant `AGENTS.md` files with learnings. This is key because Amp automatically reads these files, so future iterations (and future human developers) benefit from discovered patterns, gotchas, and conventions.
+
+Examples of what to add to AGENTS.md:
 - Patterns discovered ("this codebase uses X for Y")
 - Gotchas ("do not forget to update Z when changing W")
 - Useful context ("the settings panel is in component X")
@@ -176,4 +178,4 @@ Ralph automatically archives previous runs when you start a new feature (differe
 ## References
 
 - [Geoffrey Huntley's Ralph article](https://ghuntley.com/ralph/)
-- [Amp documentation](https://ampcode.com)
+- [Amp documentation](https://ampcode.com/manual)
