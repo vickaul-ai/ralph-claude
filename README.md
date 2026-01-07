@@ -104,15 +104,17 @@ Ralph will:
 
 ## Flowchart
 
-The `flowchart/` directory contains an interactive React Flow visualization that explains how Ralph works. Great for presentations or understanding the workflow.
+[![Ralph Flowchart](ralph-flowchart.png)](https://snarktank.github.io/ralph/)
+
+**[View Interactive Flowchart](https://snarktank.github.io/ralph/)** - Click through to see each step with animations.
+
+The `flowchart/` directory contains the source code. To run locally:
 
 ```bash
 cd flowchart
 npm install
 npm run dev
 ```
-
-Then open http://localhost:5173 and click through to see each step.
 
 ## Critical Concepts
 
