@@ -8,6 +8,8 @@ Based on [Geoffrey Huntley's Ralph pattern](https://ghuntley.com/ralph/).
 
 **[Getting Started Guide](docs/GETTING_STARTED.md)** — Complete walkthrough with a practical example
 
+**[Extending Guide](docs/EXTENDING.md)** — How to add features to existing Ralph-built apps
+
 ## Prerequisites
 
 - [Claude Code CLI](https://claude.ai/code) installed and authenticated
@@ -36,9 +38,16 @@ Copy the skills to your Claude Code config for use across all projects:
 cp -r skills/prd ~/.claude/skills/
 cp -r skills/ralph ~/.claude/skills/
 cp -r skills/ralph-init ~/.claude/skills/
+cp -r skills/ralph-enhance ~/.claude/skills/
 ```
 
 Then use `/ralph-init` in any project to set up the scripts automatically.
+
+Available skills:
+- `/prd` - Generate a Product Requirements Document
+- `/ralph` - Convert PRD to prd.json format
+- `/ralph-init` - Initialize Ralph in a project
+- `/ralph-enhance` - Get advice on extending an existing Ralph-built app
 
 ## Workflow
 
@@ -100,6 +109,8 @@ Ralph will:
 | `skills/prd/` | Skill for generating PRDs |
 | `skills/ralph/` | Skill for converting PRDs to JSON |
 | `skills/ralph-init/` | Skill for initializing Ralph in a project |
+| `skills/ralph-enhance/` | Skill for advising on extensions |
+| `docs/EXTENDING.md` | Guide for extending Ralph-built apps |
 | `flowchart/` | Interactive visualization of how Ralph works |
 
 ## Flowchart
@@ -189,6 +200,21 @@ Edit `prompt.md` to customize Ralph's behavior for your project:
 ## Archiving
 
 Ralph automatically archives previous runs when you start a new feature (different `branchName`). Archives are saved to `archive/YYYY-MM-DD-feature-name/`.
+
+## Extending Ralph-Built Apps
+
+After completing the initial build, use this decision framework for adding features:
+
+| Situation | Action |
+|-----------|--------|
+| **New major feature** (5+ stories) | Create new PRD: `/prd` → `/ralph` → `./ralph.sh` |
+| **Small addition** (1-4 related stories) | Append to existing prd.json |
+| **Bug fix** | Direct fix, no PRD needed |
+| **Quick polish** (<5 small changes) | Direct implementation |
+
+Use `/ralph-enhance` to get advice on the best approach for your specific feature.
+
+**[Full Extending Guide →](docs/EXTENDING.md)**
 
 ## References
 
