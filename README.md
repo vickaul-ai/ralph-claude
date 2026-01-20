@@ -175,6 +175,70 @@ Frontend stories must include "Verify in browser using claude-in-chrome MCP tool
 
 When all stories have `passes: true`, Ralph outputs `<promise>COMPLETE</promise>` and the loop exits.
 
+## Philosophy: Tuning Ralph
+
+Ralph is like a guitar that needs tuning. When an iteration fails, resist the urge to blame the tools. Instead:
+
+1. **Analyze the failure** - What went wrong and why?
+2. **Add "signs"** - Update prompt.md with clearer instructions
+3. **Refine specs** - Vague acceptance criteria cause vague implementations
+4. **Trust eventual consistency** - Wrong paths get corrected through iteration
+
+> "Building software with Ralph requires a great deal of faith and a belief in eventual consistency." — Geoffrey Huntley
+
+## Common Pitfalls
+
+| Pitfall | Symptom | Solution |
+|---------|---------|----------|
+| **Overbaking** | Bizarre emergent behaviors (features you didn't ask for) | Review and merge more frequently |
+| **One-shotting** | Broken code, incomplete features | Split into smaller stories |
+| **Context pollution** | Unrelated content in output | Fresh context per iteration (Ralph does this) |
+| **Vague specs** | Inconsistent implementations | Add specific acceptance criteria |
+| **Missing feedback loops** | Can't tell if code works | Add typecheck, tests, browser verification |
+
+## When Ralph Gets Stuck
+
+Ralph tracks attempt numbers in progress.txt (e.g., "US-001 (Attempt 3)"). If you see high attempt counts or Ralph hits max iterations:
+
+### 1. Diagnose the Problem
+
+```bash
+# Check which stories are incomplete
+cat scripts/ralph/prd.json | jq '.userStories[] | select(.passes == false)'
+
+# Look for high attempt counts
+grep -E "Attempt [3-9]|Attempt [0-9]{2}" scripts/ralph/progress.txt
+
+# Read iteration logs for patterns
+cat scripts/ralph/progress.txt
+```
+
+### 2. Common Fixes
+
+| Problem | Solution |
+|---------|----------|
+| Same error repeating (Attempt 3+) | Add explicit instruction to prompt.md |
+| Story too large | Split into smaller stories |
+| Missing context | Add to AGENTS.md or progress.txt Codebase Patterns |
+| Spec ambiguity | Rewrite acceptance criteria |
+| Technical blocker | Mark story for manual implementation |
+
+### 3. Recovery Options
+
+- **Tune prompt.md** - Add "signs" based on failure patterns
+- **Refine the story** - Edit prd.json with clearer acceptance criteria
+- **Split the story** - Break into 2-3 smaller pieces
+- **Revert and pivot** - `git revert` to good state, try different approach
+- **Manual takeover** - Some stories need human implementation
+
+### 4. Resume
+
+After making adjustments:
+
+```bash
+./scripts/ralph/ralph.sh 5  # Continue with fresh iterations
+```
+
 ## Debugging
 
 Check current state:
@@ -218,5 +282,29 @@ Use `/ralph-enhance` to get advice on the best approach for your specific featur
 
 ## References
 
-- [Geoffrey Huntley's Ralph article](https://ghuntley.com/ralph/)
+### Core
+
+- [Geoffrey Huntley's Ralph article](https://ghuntley.com/ralph/) - Original technique
+- [CURSED: 3-month Ralph project](https://ghuntley.com/cursed/) - Extreme test case
+
+### Deep Dives
+
+- [How to Build a Coding Agent Workshop](https://ghuntley.com/agent/) - Comprehensive implementation guide
+- [Anthropic: Effective Harnesses for Long-Running Agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) - Feature list pattern
+- [Anthropic: Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices) - Context optimization
+
+### Community
+
+- [Brief History of Ralph](https://www.humanlayer.dev/blog/brief-history-of-ralph) - Timeline and lessons learned
 - [Claude Code documentation](https://docs.anthropic.com/en/docs/claude-code)
+
+### Implementations & Extensions
+
+- [frankbria/ralph-claude-code](https://github.com/frankbria/ralph-claude-code) - Circuit breaker with advanced error detection, dual-condition exit gates
+- [thecgaigroup/ralph-cc-loop](https://github.com/thecgaigroup/ralph-cc-loop) - PRD-based task tracking with `dependsOn` field
+
+### Stuck Detection & Governance
+
+- [Supervising Ralph: Principal Skinner](https://securetrajectories.substack.com/p/ralph-wiggum-principal-skinner-agent-reliability) - Behavioral circuit breakers, infrastructure-level safety
+- [Why AI Agents Get Stuck in Loops](https://www.fixbrokenaiapps.com/blog/ai-agents-infinite-loops) - Loop guardrails framework, repetitive output detection
+- [HN: Controller-enforced alternative to Ralph](https://news.ycombinator.com/item?id=46651646) - Tests as acceptance gate, git as safety harness

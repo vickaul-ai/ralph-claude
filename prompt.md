@@ -19,7 +19,7 @@ You are an autonomous coding agent working on a software project.
 
 APPEND to progress.txt (never replace, always append):
 ```
-## [Date/Time] - [Story ID]
+## [Date/Time] - [Story ID] (Attempt N)
 Session: Ralph iteration $RALPH_ITERATION
 - What was implemented
 - Files changed
@@ -29,6 +29,8 @@ Session: Ralph iteration $RALPH_ITERATION
   - Useful context (e.g., "the evaluation panel is in component X")
 ---
 ```
+
+**Determine attempt number**: Before starting, count how many previous entries in progress.txt reference this story ID. If this is your 3rd time working on US-001, report "Attempt 3". First attempt = "Attempt 1".
 
 Include the session info so learnings are traceable.
 
@@ -79,6 +81,16 @@ Only update AGENTS.md if you have **genuinely reusable knowledge** that would he
 - Do NOT commit broken code
 - Keep changes focused and minimal
 - Follow existing code patterns
+
+## When Stuck
+
+If you encounter a blocker that prevents completing the current story:
+
+1. Document the blocker clearly in progress.txt with attempt number
+2. Include: what was attempted, why it failed, what might help
+3. End the iteration normally (do NOT mark `passes: true`)
+
+The human operator will decide whether to tune the prompt, refine the spec, or skip the story. Your job is to provide clear information about why you're stuck.
 
 ## Browser Testing (Required for Frontend Stories)
 
